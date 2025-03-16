@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f874d2d71ccdfd478a07d84219898a1, type: 3}
+  m_Name: EnemySO_02Square
+  m_EditorClassIdentifier: 
+  myIndex: 2
+  myHP: 30
+  myName: "\uC0AC\uAC01\uD615 \uAD34\uBB3C"
+  myPrefab: {fileID: 6069528306912510728, guid: 8782af66c79a26543ae992060ed3462c, type: 3}
+  myPoint: 20
+  myGold: 50
