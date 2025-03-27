@@ -77,14 +77,15 @@ public class GameManager : MonoBehaviour
     {
         yield return StartCoroutine(Fade(false));
         SceneManager.LoadScene(targetSceneIndex);
+        nowSceneIndex = targetSceneIndex;
     }
 
     #endregion
 
     #region 경고 알림
 
-    public GameObject AlertObj;
-    public TextMeshProUGUI AlertText;
+    [SerializeField] private GameObject AlertObj;
+    [SerializeField] private TextMeshProUGUI AlertText;
     Coroutine AlertCoroutine;
     public void ShowAlert(string msg)
     {
@@ -107,14 +108,14 @@ public class GameManager : MonoBehaviour
     #region 저장
 
     [SerializeField] private SaveManager saveManager;
-    public GameData nowData;
+    public PlayerData nowData;
     public void SaveGame()
     {
         saveManager.SaveData(nowData);
     }
     public bool LoadGame()
     {
-        if (saveManager.TryLoadData(out GameData data))
+        if (saveManager.TryLoadData(out PlayerData data))
         {
             nowData = data;
             return true;
@@ -139,8 +140,47 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    #region 능력치
+
+    public PlayerStat playerStat;
+
+    public void InitStat()
+    {
+        playerStat = new PlayerStat();
+        SetStat();
+    }
+    
+    public void SetStat()
+    {
+        WeaponSO targetWeapon = weaponSOs[nowData.nowWeaponIndex];
+        int targetWeaponUpg = nowData.WeaponDatas[targetWeapon.myIndex];
+
+        playerStat.atkDamage = targetWeapon.ReturnAtk(targetWeaponUpg);
+        playerStat.criticalProb = targetWeapon.ReturnCriticalProb(targetWeaponUpg) * 0.01f;
+
+        float autoAtkValue = upgradeSOs[1].ReturnValue(nowData.UpgradeLvs[1]);
+        if (autoAtkValue <= 0) playerStat.autoAttackDelay = float.MaxValue;
+        else playerStat.autoAttackDelay = 1 / autoAtkValue;
+
+        playerStat.criticalDamage = 1.5f + (upgradeSOs[0].ReturnValue(nowData.UpgradeLvs[0]) * 0.01f);
+        playerStat.goldEarn = (int)(5 * (1 + upgradeSOs[2].ReturnValue(nowData.UpgradeLvs[2]) * 0.01f));
+    }
+
+    #endregion
+
     [SerializeField] private DataManager dataManager;
     public UpgradeSO[] upgradeSOs => dataManager.upgradeSOs;
     public WeaponSO[] weaponSOs => dataManager.weaponSOs;
     public EnemySO[] enemySOs => dataManager.enemySOs;
+}
+
+public class PlayerStat
+{
+    public int atkDamage;
+    public float criticalProb;
+    public float criticalDamage;
+
+    public float autoAttackDelay;
+
+    public int goldEarn;
 }

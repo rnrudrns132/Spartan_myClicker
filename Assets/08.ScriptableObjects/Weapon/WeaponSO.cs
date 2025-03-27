@@ -32,7 +32,7 @@ public class WeaponSO : ScriptableObject
     }
     public string ReturnExp(int lv)
     {
-        return string.Format("공격력: {0}<br>치명타 확률: {1:0.0}%", ReturnAtk(lv), ReturnCriticalProb(lv));
+        return $"공격력: {ReturnAtk(lv)}<br>치명타 확률: {ReturnCriticalProb(lv):0.0}%";
     }
     public int ReturnUpgCost(int targetLv)
     {

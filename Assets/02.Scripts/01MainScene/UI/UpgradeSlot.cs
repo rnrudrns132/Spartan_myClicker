@@ -6,11 +6,14 @@ using TMPro;
 
 public class UpgradeSlot : MonoBehaviour
 {
+    UpgradeManager upgradeM => MainSceneManager.msm.upgradeManager;
+    
     public UpgradeSO mySO;
-    public Image myImg;
-    public TextMeshProUGUI myNameText;
-    public TextMeshProUGUI myExpText;
-    public TextMeshProUGUI myCostText;
+    
+    [SerializeField] private Image myImg;
+    [SerializeField] private TextMeshProUGUI myNameText;
+    [SerializeField] private TextMeshProUGUI myExpText;
+    [SerializeField] private TextMeshProUGUI myCostText;
 
     public int nowUpgradeLv => GameManager.gm.nowData.UpgradeLvs[mySO.myIndex];
     public int nextUpgradeLv => nowUpgradeLv + 1;
@@ -23,7 +26,7 @@ public class UpgradeSlot : MonoBehaviour
         SetSlot();
 
         MainSceneManager.msm.OnGoldChanged += SetCost;
-        MainSceneManager.msm.upgradeManager.OnUpgrade += SetSlot;
+        upgradeM.OnUpgrade += SetSlot;
     }
     void SetSlot()
     {
@@ -36,11 +39,10 @@ public class UpgradeSlot : MonoBehaviour
         int cost = mySO.ReturnUpgCost(nextUpgradeLv);
         myCostText.text = cost.ToString();
 
-        if (MainSceneManager.msm.HasGold(cost)) myCostText.color = Color.black;
-        else myCostText.color = Color.red;
+        myCostText.color = MainSceneManager.msm.HasGold(cost) ? Color.black : Color.red;
     }
     public void ClickUpgrade()
     {
-        MainSceneManager.msm.upgradeManager.Upgrade(this);
+        upgradeM.Upgrade(this);
     }
 }

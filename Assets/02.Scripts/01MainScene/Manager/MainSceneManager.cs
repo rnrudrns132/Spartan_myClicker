@@ -33,8 +33,8 @@ public class MainSceneManager : MonoBehaviour
 
     #region 자원
 
-    public TextMeshProUGUI PointText;
-    public TextMeshProUGUI GoldText;
+    [SerializeField] private TextMeshProUGUI PointText;
+    [SerializeField] private TextMeshProUGUI GoldText;
     public event Action OnPointChanged;
     public event Action OnGoldChanged;
     void InitializeResource()

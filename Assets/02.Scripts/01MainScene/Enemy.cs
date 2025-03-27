@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private readonly int AttackedAnimParam = Animator.StringToHash("Attacked");
+    private readonly int DeadAnimParam = Animator.StringToHash("Dead");
+    
     public EnemySO mySO;
     public int myLv;
     Animator myAnim;
+    
     public void Initializer(EnemySO target, int lv)
     {
         myAnim = GetComponent<Animator>();
@@ -24,7 +28,7 @@ public class Enemy : MonoBehaviour
     public event Action OnTakeDamage;
     public void TakeDamage(float amt)
     {
-        myAnim.SetTrigger("Attacked");
+        myAnim.SetTrigger(AttackedAnimParam);
 
         nowHP -= amt;
         OnTakeDamage?.Invoke();
@@ -37,7 +41,7 @@ public class Enemy : MonoBehaviour
     public event Action OnDead;
     void Dead()
     {
-        myAnim.SetTrigger("Dead");
+        myAnim.SetTrigger(DeadAnimParam);
 
         nowHP = 0;
         OnDead?.Invoke();
@@ -45,13 +49,8 @@ public class Enemy : MonoBehaviour
 
     public void DeadEnd()
     {
-        GameManager.gm.nowData.nowEnemyCnt++;
-        if (GameManager.gm.nowData.nowEnemyCnt > 10)
-        {
-            GameManager.gm.nowData.nowEnemyCnt = 0;
-            GameManager.gm.nowData.nowStage++;
-            GameManager.gm.SaveGame();
-        }
+        GameManager.gm.nowData.PlusEnemyCnt();
+        GameManager.gm.SaveGame();
         MainSceneManager.msm.fightManager.SpawnEnemy();
         Destroy(gameObject);
     }

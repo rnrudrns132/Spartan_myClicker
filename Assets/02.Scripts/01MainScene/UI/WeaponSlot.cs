@@ -7,19 +7,21 @@ using TMPro;
 public class WeaponSlot : MonoBehaviour
 {
     GameManager gm => GameManager.gm;
+    WeaponManager weaponM => MainSceneManager.msm.weaponManager;
+    
     public WeaponSO mySO;
 
-    public Image myImg;
-    public GameObject myImgBlind;
-    public TextMeshProUGUI myNameText;
-    public TextMeshProUGUI myExpText;
+    [SerializeField] private Image myImg;
+    [SerializeField] private GameObject myImgBlind;
+    [SerializeField] private TextMeshProUGUI myNameText;
+    [SerializeField] private TextMeshProUGUI myExpText;
 
-    public TextMeshProUGUI myBuyCostText;
-    public TextMeshProUGUI myUpgCostText;
+    [SerializeField] private TextMeshProUGUI myBuyCostText;
+    [SerializeField] private TextMeshProUGUI myUpgCostText;
 
-    public GameObject BuyBtnObj;
-    public GameObject UpgBtnObj;
-    public GameObject EquipBtnObj;
+    [SerializeField] private GameObject BuyBtnObj;
+    [SerializeField] private GameObject UpgBtnObj;
+    [SerializeField] private GameObject EquipBtnObj;
 
     public void Initializer(WeaponSO target)
     {
@@ -29,7 +31,7 @@ public class WeaponSlot : MonoBehaviour
         SetSlot();
 
         MainSceneManager.msm.OnPointChanged += SetCost;
-        MainSceneManager.msm.weaponManager.OnNowWeaponChanged += SetSlot;
+        weaponM.OnNowWeaponChanged += SetSlot;
     }
 
     public void SetSlot()
@@ -42,8 +44,8 @@ public class WeaponSlot : MonoBehaviour
 
             BuyBtnObj.SetActive(false);
             UpgBtnObj.SetActive(true);
-            if (gm.nowData.nowWeaponIndex == mySO.myIndex) EquipBtnObj.SetActive(false);
-            else EquipBtnObj.SetActive(true);
+            
+            EquipBtnObj.SetActive(gm.nowData.nowWeaponIndex != mySO.myIndex);
         }
         else
         {
@@ -64,27 +66,25 @@ public class WeaponSlot : MonoBehaviour
             int cost = mySO.ReturnUpgCost(upgLv + 1);
             myUpgCostText.text = cost.ToString();
 
-            if (MainSceneManager.msm.HasPoint(cost)) myUpgCostText.color = Color.black;
-            else myUpgCostText.color = Color.red;
+            myUpgCostText.color = MainSceneManager.msm.HasPoint(cost) ? Color.black : Color.red;
         }
         else
         {
             myBuyCostText.text = mySO.myBuyCost.ToString();
-            if (MainSceneManager.msm.HasPoint(mySO.myBuyCost)) myBuyCostText.color = Color.black;
-            else myBuyCostText.color = Color.red;
+            myBuyCostText.color = MainSceneManager.msm.HasPoint(mySO.myBuyCost) ? Color.black : Color.red;
         }
     }
 
     public void ClickBuy()
     {
-        MainSceneManager.msm.weaponManager.BuyWeapon(this);
+        weaponM.BuyWeapon(this);
     }
     public void ClickUpg()
     {
-        MainSceneManager.msm.weaponManager.UpgWeapon(this);
+        weaponM.UpgWeapon(this);
     }
     public void ClickEquip()
     {
-        MainSceneManager.msm.weaponManager.EquipWeapon(this);
+        weaponM.EquipWeapon(this);
     }
 }

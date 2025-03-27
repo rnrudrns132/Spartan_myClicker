@@ -8,7 +8,7 @@ public class UpgradeManager : MonoBehaviour
     GameManager gm => GameManager.gm;
     MainSceneManager msm => MainSceneManager.msm;
 
-    public UpgradeSlot[] upgradeSlots;
+    [SerializeField] private UpgradeSlot[] upgradeSlots;
 
     public void Initializer()
     {
@@ -16,6 +16,7 @@ public class UpgradeManager : MonoBehaviour
         {
             upgradeSlots[i].Initializer(gm.upgradeSOs[i]);
         }
+        OnUpgrade += gm.SetStat;
     }
     public event Action OnUpgrade;
     public void Upgrade(UpgradeSlot targetSlot)

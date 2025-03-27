@@ -14,18 +14,23 @@ public class TitleManager : MonoBehaviour
 
     public void StartNewGame()
     {
-        gm.nowData = new GameData();
+        gm.nowData = new PlayerData();
         gm.SaveGame();
-        gm.MoveScene(1);
-        gm.PlaySFX(SFXEnum.UI_CLICK);
+        StartGame();
     }
     public void LoadAndStartGame()
     {
         if (gm.LoadGame())
         {
-            gm.MoveScene(1);
-            gm.PlaySFX(SFXEnum.UI_CLICK);
+            StartGame();
         }
         else gm.ShowAlert("저장된 데이터가 없습니다");
+    }
+
+    private void StartGame()
+    {
+        gm.MoveScene(1);
+        gm.PlaySFX(SFXEnum.UI_CLICK);
+        gm.InitStat();
     }
 }

@@ -22,19 +22,20 @@ public class FightManager : MonoBehaviour
 
         nowEnemy = Instantiate(nowTarget.myPrefab, new Vector3(0, 0.5f, 0), Quaternion.identity).GetComponent<Enemy>();
         nowEnemy.Initializer(nowTarget, enemyLv);
-        nowEnemy.OnTakeDamage += SetHPbar;
+        nowEnemy.OnTakeDamage += SetHpBar;
         nowEnemy.OnDead += SetNowEnemyDead;
 
         StageNameText.text = $"{nowTarget.ReturnName(enemyLv)}의 숲";
         NowEnemyCntText.text = $"{gm.nowData.nowEnemyCnt}/10";
         NowEnemyNameText.text = nowTarget.ReturnName(enemyLv);
-        SetHPbar();
+        SetHpBar();
     }
-    public TextMeshProUGUI StageNameText;
-    public TextMeshProUGUI NowEnemyCntText;
-    public TextMeshProUGUI NowEnemyNameText;
-    public Image hpGauge;
-    void SetHPbar()
+    
+    [SerializeField] private TextMeshProUGUI StageNameText;
+    [SerializeField] private TextMeshProUGUI NowEnemyCntText;
+    [SerializeField] private TextMeshProUGUI NowEnemyNameText;
+    [SerializeField] private Image hpGauge;
+    void SetHpBar()
     {
         hpGauge.fillAmount = nowEnemy.nowHP / nowEnemy.MaxHP;
     }

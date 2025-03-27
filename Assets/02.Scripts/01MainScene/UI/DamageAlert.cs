@@ -5,10 +5,10 @@ using TMPro;
 
 public class DamageAlert : MonoBehaviour
 {
-    public TextMeshPro myText;
-    public Rigidbody2D myRigid;
-    public Material normalMaterial;
-    public Material criticalMaterial;
+    [SerializeField] private TextMeshPro myText;
+    [SerializeField] private Rigidbody2D myRigid;
+    [SerializeField] private Material normalMaterial;
+    [SerializeField] private Material criticalMaterial;
 
     public void ShowNum(int damage, bool isCritical)
     {

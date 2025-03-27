@@ -10,9 +10,9 @@ public class WeaponManager : MonoBehaviour
     GameManager gm => GameManager.gm;
     MainSceneManager msm => MainSceneManager.msm;
 
-    public TextMeshProUGUI nowWeaponNameText;
-    public Image nowWeaponImage;
-    public TextMeshProUGUI nowWeaponExpText;
+    [SerializeField] private TextMeshProUGUI nowWeaponNameText;
+    [SerializeField] private Image nowWeaponImage;
+    [SerializeField] private TextMeshProUGUI nowWeaponExpText;
 
     public void Initializer()
     {
@@ -20,6 +20,7 @@ public class WeaponManager : MonoBehaviour
         InitializeInventory();
 
         OnNowWeaponChanged += SetNowWeapon;
+        OnNowWeaponChanged += gm.SetStat;
     }
 
     void SetNowWeapon()
@@ -32,9 +33,9 @@ public class WeaponManager : MonoBehaviour
         nowWeaponExpText.text = nowWeapon.ReturnExp(nowWeaponUpg);
     }
 
-    public GameObject WeaponInventory;
-    public GameObject WeaponSlotPrefab;
-    public Transform WeaponSlotParent;
+    [SerializeField] private GameObject WeaponInventory;
+    [SerializeField] private GameObject WeaponSlotPrefab;
+    [SerializeField] private Transform WeaponSlotParent;
     void InitializeInventory()
     {
         foreach(var t in gm.weaponSOs)
